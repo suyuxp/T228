@@ -11,7 +11,7 @@ import {
 }
 from 'react-redux';
 
-import List from "./lists";
+import Lists from "./lists";
 import './texts.less';
 
 import classNames from 'classnames';
@@ -48,9 +48,13 @@ export default class texts extends React.Component {
 			fetch(this.state.url + "/texts?word=" + words)
 				.then(res => res.json())
 				.then(res => {
-					// console.log(JSON.stringify(res));
-					console.log(res.length);
-					this.setState({datas:res});
+					let datas = new Array();
+					res.map((val,index)=>{
+						datas.push(
+							<Lists key={index} data={val}/>
+						);
+					});
+					this.setState({datas:datas});
 				}).catch((error) => {
 					console.error(error);
 				});
@@ -85,11 +89,7 @@ export default class texts extends React.Component {
 					<Col span="1"></Col>
 					<Col span="22">
 						<Row>
-							{
-								this.state.datas.map((data,index) => {
-									return <h4>{data.level.name}</h4>
-								})
-							}
+							{this.state.datas}
 						</Row>
 					</Col>
 				</Row>

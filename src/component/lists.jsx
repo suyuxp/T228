@@ -5,6 +5,7 @@ import {
 from 'antd';
 
 import _ from "underscore";
+import './lists.less';
 
 export default class lists extends React.Component {
 	static propTypes = {
@@ -13,12 +14,21 @@ export default class lists extends React.Component {
 
 	constructor(props) {
 		super(props);
-		console.log(JSON.stringify(props));
+		this.state = {
+			data:this.props.data
+		};
 	}
 
 	render() {
 		return (
-			<div></div>
+			<Row>
+				<div className="header">
+					<span className="title"><a title="点击进入高级检索">{this.state.data?this.state.data.level.name:''}   (共{this.state.data.texts.length}篇) </a></span>
+				</div>
+				<div>
+					{this.state.data?this.state.data.level.name:''}--{this.state.data.texts.length}					
+				</div>
+			</Row>
 		);
 	}
 }
