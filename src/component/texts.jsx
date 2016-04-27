@@ -1,20 +1,15 @@
 import React from 'react';
 import {
-	Icon, Form, Input, Row, Col, Button
+	Icon, Form, Input, Row, Col, Button,
 }
 from 'antd';
 
 import _ from "underscore";
-
-import {
-	connect
-}
-from 'react-redux';
-
+import classNames from 'classnames';
 import Lists from "./lists";
 import './texts.less';
+import PubSub from "pubsub-js";
 
-import classNames from 'classnames';
 const InputGroup = Input.Group;
 
 export default class texts extends React.Component {
@@ -26,11 +21,30 @@ export default class texts extends React.Component {
 		this.state = {
 			loading: false,
 			iconLoading: false,
-			value: '',
+			value: '交通安全',
 			focus: false,
 			url: this.props.url,
-			datas: new Array()
+			datas: new Array(),
 		};
+	}
+	componentDidMount() {
+		this.pubsub_token = PubSub.subscribe('products', function(topic, product) {
+			this.setState({
+				datas: new Array()
+			});
+			let datas = new Array();
+			product.map((val, index) => {
+				datas.push(
+					<Lists key={index} url={this.state.url} data={val}/>
+				);
+			});
+			this.setState({
+				datas: datas
+			});
+		}.bind(this));
+	}
+	componentWillUnmount() {
+		PubSub.unsubscribe(this.pubsub_token);
 	}
 	handleInputChange(e) {
 		this.setState({
@@ -45,16 +59,21 @@ export default class texts extends React.Component {
 	handleSearch() {
 		let words = this.state.value;
 		if (words) {
-			fetch(this.state.url + "/texts?word=" + words)
+			fetch(`${this.state.url}/texts?word=${words}`)
 				.then(res => res.json())
 				.then(res => {
+					this.setState({
+						datas: new Array()
+					});
 					let datas = new Array();
-					res.map((val,index)=>{
+					res.map((val, index) => {
 						datas.push(
 							<Lists key={index} url={this.state.url} data={val}/>
 						);
 					});
-					this.setState({datas:datas});
+					this.setState({
+						datas: datas
+					});
 				}).catch((error) => {
 					console.error(error);
 				});

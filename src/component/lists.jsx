@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-	Icon, Form, Input, Row, Col, Button, Modal
+	Icon, Form, Input, Row, Col, Button, Modal, Pagination
 }
 from 'antd';
 
@@ -15,6 +15,7 @@ export default class lists extends React.Component {
 
 	constructor(props) {
 		super(props);
+		// console.log(this.props);
 		this.state = {
 			data: this.props.data,
 			url: this.props.url,
@@ -22,8 +23,34 @@ export default class lists extends React.Component {
 			texts: new Array(),
 			visible: false,
 			modalTitle: '',
-			modalContent: ''
+			modalContent: '',
+			pageSize: this.props.pageSize || 10,
+			pages: '',
 		};
+	}
+
+	componentDidMount() {
+		let texts = _.map(this.state.data.texts.slice(0, this.state.pageSize), (text, index) => {
+			return (
+				<Row className="text" key={text.id}>
+					<Col span="1" style={{textAlign:"-webkit-center"}}>
+						{index+1}、
+					</Col>
+					<Col span="20">
+						{text.name}&nbsp;&nbsp;&nbsp;&nbsp;(颁布日期:{moment(text.issue_date).format("YYYY-MM-DD")})
+					</Col>
+					<Col span="3">
+						<Button type="primary" size="small" onClick={this.showModal.bind(this,text)}>查看全文</Button>
+					</Col>
+				</Row>
+			)
+		});
+		let pages = <Pagination size='small' pageSize={this.state.pageSize} onChange={this.onChange.bind(this)} total={this.state.data.texts.length} />;
+		this.setState({
+			level: this.state.data.level,
+			texts: texts,
+			pages: pages,
+		});
 	}
 
 	clickTitle(e) {
@@ -31,10 +58,9 @@ export default class lists extends React.Component {
 	}
 
 	showModal(text) {
-		fetch(url + '/texts/' + text.id)
+		fetch(`${this.state.url}/texts/${text.id}`)
 			.then(res => res.json())
 			.then(res => {
-				console.log(JSON.stringify(res.content));
 				this.setState({
 					visible: true,
 					modalTitle: res.name,
@@ -59,8 +85,9 @@ export default class lists extends React.Component {
 			modalContent: '',
 		});
 	}
-	componentDidMount() {
-		let texts = _.map(this.state.data.texts, (text, index) => {
+	onChange(page) {
+		console.log(page);
+		let texts = _.map(this.state.data.texts.slice((page - 1) * this.state.pageSize, page * this.state.pageSize), (text, index) => {
 			return (
 				<Row className="text" key={text.id}>
 					<Col span="1" style={{textAlign:"-webkit-center"}}>
@@ -80,7 +107,6 @@ export default class lists extends React.Component {
 			texts: texts,
 		});
 	}
-
 	render() {
 		return (
 			<div>
@@ -88,14 +114,24 @@ export default class lists extends React.Component {
 					<div className="header">
 						<span className="title">
 							<a title="点击进入高级检索" 
-							onClick={this.clickTitle.bind(this)}>{this.state.data?this.state.data.level.name:''}   (共{this.state.data.texts.length}篇) 
+							onClick={this.clickTitle.bind(this)}>
+							{this.state.data?this.state.data.level.name:''}&nbsp;&nbsp;&nbsp;&nbsp;(共{this.state.data.texts.length}篇) 
 							</a>
 						</span>
 					</div>
 					<div className="lists">
-						{
-							this.state.texts
-						}					
+						{this.state.texts}
+						<Row className="text pages">
+							<Col span="1">
+								&nbsp;
+							</Col>
+							<Col span="21" className="">
+								{this.state.pages}
+							</Col>
+							<Col span="2">
+								&nbsp;
+							</Col>
+						</Row>
 					</div>
 				</Row>
 				<div>

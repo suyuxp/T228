@@ -13,7 +13,7 @@ import {
 }
 from "antd";
 
-const url = "http://127.0.0.1:8360"
+const url = "http://127.0.0.1:8360";
 
 class App extends React.Component {
 	render() {

@@ -5,6 +5,7 @@ import {
 from 'antd';
 import './categories.less';
 import _ from "underscore";
+import PubSub from "pubsub-js";
 
 const TreeNode = Tree.TreeNode;
 
@@ -43,7 +44,7 @@ function getNewTreeData(treeData, curKey, child, level) {
 	setLeaf(treeData, curKey, level);
 }
 
-export default class App extends React.Component {
+export default class categories extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -58,10 +59,9 @@ export default class App extends React.Component {
 		};
 	}
 	componentDidMount() {
-		fetch(this.state.url + "/categories")
+		fetch(`${this.state.url}/categories`)
 			.then(res => res.json())
 			.then(res => {
-				console.log(JSON.stringify(res));
 				let treeNodes = _.map(res, (val) => {
 					return {
 						name: val.name,
@@ -79,7 +79,17 @@ export default class App extends React.Component {
 			});
 	}
 	onSelect(info) {
+		// console.log(info)
 		if (info.length) {
+			// console.log(`${this.state.url}/categories/${info[0]}/texts`)
+			fetch(`${this.state.url}/categories/${info[0]}/texts`)
+				.then(res => res.json())
+				.then(res => {
+					PubSub.publish('products', res);
+					// console.log(JSON.stringify(res))
+				}).catch((error) => {
+					console.error(error);
+				});
 			let expand = (info == this.state.expanded) ? [] : info
 			this.setState({
 				selected: info,
