@@ -11,6 +11,7 @@
     "babel-plugin-antd": "0.3.x",
     "classnames": "^2.2.4",
     "es3ify-loader": "^0.1.0",
+    "moment": "^2.13.0",
     "react": "0.14.x",
     "react-dom": "0.14.x",
     "react-redux": "^4.4.5",

@@ -52,7 +52,7 @@ export default class App extends React.Component {
 				key: 0,
 				isLeaf: false
 			}],
-			url: 'http://127.0.0.1:8360',
+			url: this.props.url,
 			selected: ["-1"],
 			expanded: ["-1"]
 		};
@@ -79,7 +79,6 @@ export default class App extends React.Component {
 			});
 	}
 	onSelect(info) {
-		console.log(info)
 		if (info.length) {
 			let expand = (info == this.state.expanded) ? [] : info
 			this.setState({
@@ -87,9 +86,6 @@ export default class App extends React.Component {
 				expanded: info
 			});
 		}
-	}
-	onLoadData(treeNode) {
-
 	}
 	render() {
 		const loop = data => data.map((item) => {

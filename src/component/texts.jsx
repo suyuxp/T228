@@ -26,9 +26,9 @@ export default class texts extends React.Component {
 		this.state = {
 			loading: false,
 			iconLoading: false,
-			value: '交通安全',
+			value: '',
 			focus: false,
-			url: 'http://127.0.0.1:8360',
+			url: this.props.url,
 			datas: new Array()
 		};
 	}
@@ -51,7 +51,7 @@ export default class texts extends React.Component {
 					let datas = new Array();
 					res.map((val,index)=>{
 						datas.push(
-							<Lists key={index} data={val}/>
+							<Lists key={index} url={this.state.url} data={val}/>
 						);
 					});
 					this.setState({datas:datas});
