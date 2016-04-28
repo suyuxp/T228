@@ -114,9 +114,9 @@ export default class lists extends React.Component {
 				<Row>
 					<div className="header">
 						<span className="title">
-							<a title="点击进入高级检索" 
+							<a title="点击进入高级检索"
 							onClick={this.clickTitle.bind(this)}>
-							{this.state.data?this.state.data.level.name:''}&nbsp;&nbsp;&nbsp;&nbsp;(共{this.state.data.texts.length}篇) 
+							{this.state.data?this.state.data.level.name:''}&nbsp;&nbsp;&nbsp;&nbsp;(共{this.state.data.texts.length}篇)
 							</a>
 						</span>
 					</div>

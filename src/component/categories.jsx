@@ -60,6 +60,7 @@ export default class categories extends React.Component {
 		};
 	}
 	componentDidMount() {
+		console.log(`${this.state.url}/categories`);
 		fetch(`${this.state.url}/categories`)
 			.then(res => res.json())
 			.then(res => {
@@ -82,7 +83,7 @@ export default class categories extends React.Component {
 	onSelect(info) {
 		// console.log(info)
 		if (info.length) {
-			// console.log(`${this.state.url}/categories/${info[0]}/texts`)
+			console.log(`${this.state.url}/categories/${info[0]}/texts`)
 			fetch(`${this.state.url}/categories/${info[0]}/texts`)
 				.then(res => res.json())
 				.then(res => {
