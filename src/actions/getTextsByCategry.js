@@ -7,47 +7,47 @@ export const RECEIVE_POSTS = 'RECEIVE_POSTS';
 export const SELECT_CATEGRY = 'SELECT_CATEGRY';
 export const INVALIDATE_TEXTS = 'INVALIDATE_TEXTS';
 
-export function selectCategry(category_id) {
+export function selectCategry(categoryId) {
   return {
     type: SELECT_CATEGRY,
-    category_id
+    categoryId
   }
 }
 
-export function invalidateTexts(category_id) {
+export function invalidateTexts(categoryId) {
   return {
     type: INVALIDATE_TEXTS,
-    category_id
+    categoryId
   }
 }
 
-function requestTexts(category_id) {
+function requestTexts(categoryId) {
   return {
     type: REQUEST_TEXTS,
-    category_id
+    categoryId
   }
 }
 
-function receiveTexts(category_id, json) {
+function receiveTexts(categoryId, json) {
   return {
     type: RECEIVE_POSTS,
-    category_id,
+    categoryId,
     posts: json.data.children.map(child => child.data),
     receivedAt: Date.now()
   }
 }
 
-function fetchTexts(category_id) {
+function fetchTexts(categoryId) {
   return dispatch => {
-    dispatch(requestTexts(category_id))
-    return fetch(`${baseUrl}/categories/${category_id}`)
+    dispatch(requestTexts(categoryId))
+    return fetch(`${baseUrl}/categories/${categoryId}`)
       .then(response => response.json())
-      .then(json => dispatch(receiveTexts(category_id, json)))
+      .then(json => dispatch(receiveTexts(categoryId, json)))
   }
 }
 
-export function fetchPostsIfNeeded(category_id) {
+export function fetchPostsIfNeeded(categoryId) {
   return (dispatch, getState) => {
-      return dispatch(fetchPosts(category_id))
+      return dispatch(fetchPosts(categoryId))
   }
 }
