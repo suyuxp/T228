@@ -4,6 +4,7 @@ import {
 }
 from 'antd';
 
+import fetch from 'isomorphic-fetch'
 import _ from "underscore";
 import moment from "moment";
 import './lists.less';
@@ -33,7 +34,7 @@ export default class lists extends React.Component {
 		let texts = _.map(this.state.data.texts.slice(0, this.state.pageSize), (text, index) => {
 			return (
 				<Row className="text" key={text.id}>
-					<Col span="1" style={{textAlign:"-webkit-center"}}>
+					<Col span="1">
 						{index+1}、
 					</Col>
 					<Col span="20">
