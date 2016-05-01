@@ -6,6 +6,7 @@ from 'antd';
 import './categories.less';
 import _ from "underscore";
 import PubSub from "pubsub-js";
+import 'isomorphic-fetch';
 
 const TreeNode = Tree.TreeNode;
 
