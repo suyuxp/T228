@@ -12,6 +12,7 @@
     "classnames": "^2.2.4",
     "es3ify-loader": "^0.1.0",
     "lib": "^0.1.1",
+    "isomorphic-fetch": "^2.2.1",
     "moment": "^2.13.0",
     "pubsub-js": "^1.5.3",
     "react": "0.14.x",
