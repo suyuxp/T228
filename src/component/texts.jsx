@@ -1,9 +1,17 @@
 import React from 'react';
 import {
-	Icon, Form, Input, Row, Col, Button,
+	Icon,
+	Form,
+	Input,
+	Row,
+	Col,
+	Button,
 }
 from 'antd';
-
+import {
+	polyfill
+} from 'es6-promise';
+import fetch from 'isomorphic-fetch';
 import _ from "underscore";
 import classNames from 'classnames';
 import Lists from "./lists";
@@ -21,7 +29,7 @@ export default class texts extends React.Component {
 		this.state = {
 			loading: false,
 			iconLoading: false,
-			value: '交通安全',
+			value: '',
 			focus: false,
 			url: this.props.url,
 			datas: new Array(),

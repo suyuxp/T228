@@ -1,11 +1,22 @@
 import React from 'react';
 import {
-	Icon, Form, Input, Row, Col, Button, Modal, Pagination
+	Icon,
+	Form,
+	Input,
+	Row,
+	Col,
+	Button,
+	Modal,
+	Pagination
 }
 from 'antd';
-
+import {
+	polyfill
+} from 'es6-promise';
+import fetch from 'isomorphic-fetch';
 import _ from "underscore";
 import moment from "moment";
+import ReactMarkdown from "react-markdown";
 import './lists.less';
 
 export default class lists extends React.Component {
@@ -26,6 +37,7 @@ export default class lists extends React.Component {
 			modalContent: '',
 			pageSize: this.props.pageSize || 10,
 			pages: '',
+			footer : <div></div>
 		};
 	}
 
@@ -33,7 +45,7 @@ export default class lists extends React.Component {
 		let texts = _.map(this.state.data.texts.slice(0, this.state.pageSize), (text, index) => {
 			return (
 				<Row className="text" key={text.id}>
-					<Col span="1" style={{textAlign:"-webkit-center"}}>
+					<Col span="1" style={{textAlign:"center"}}>
 						{index+1}、
 					</Col>
 					<Col span="20">
@@ -64,7 +76,7 @@ export default class lists extends React.Component {
 				this.setState({
 					visible: true,
 					modalTitle: res.name,
-					modalContent: res.content,
+					modalContent: <ReactMarkdown source={res.content} />,
 				});
 			}).catch((error) => {
 				console.error(error);
@@ -90,7 +102,7 @@ export default class lists extends React.Component {
 		let texts = _.map(this.state.data.texts.slice((page - 1) * this.state.pageSize, page * this.state.pageSize), (text, index) => {
 			return (
 				<Row className="text" key={text.id}>
-					<Col span="1" style={{textAlign:"-webkit-center"}}>
+					<Col span="1" style={{textAlign:"center"}}>
 						{index+1}、
 					</Col>
 					<Col span="20">
@@ -136,8 +148,9 @@ export default class lists extends React.Component {
 				</Row>
 				<div>
 			        <Modal title={this.state.modalTitle} visible={this.state.visible}
+			          footer={this.state.footer}
 			          onOk={this.handleOk.bind(this)} onCancel={this.handleCancel.bind(this)}>
-						<p>{this.state.modalContent}</p>
+						{this.state.modalContent}
 			        </Modal>
 		      	</div>
 	      	</div>
