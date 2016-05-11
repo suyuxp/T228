@@ -6,7 +6,10 @@ from 'antd';
 import './categories.less';
 import _ from "underscore";
 import PubSub from "pubsub-js";
-import 'isomorphic-fetch';
+import {
+	polyfill
+} from 'es6-promise';
+import fetch from 'isomorphic-fetch';
 
 const TreeNode = Tree.TreeNode;
 
